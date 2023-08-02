@@ -49,9 +49,16 @@ var bg = {
     h  : 226 ,
     x  : 0 ,
     y  : can.height - 226 ,
+    dx : 2 ,
     draw : function(){
       c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x,this.y,this.w,this.h)
       c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x + this.w ,this.y,this.w,this.h)
+      
+    },
+    update :function(){
+        if (state.current == state.game ) {
+            bg.x = (bg.x - this.dx) % (this.w/2) 
+        }           
     }
 
 }
@@ -62,9 +69,15 @@ var fg = {
     h  : 112 ,
     x  : 0 ,
     y  : can.height - 112 ,
+    dx : 2 ,
     draw : function(){
       c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x,this.y,this.w,this.h)
       c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x + this.w ,this.y,this.w,this.h)
+    },
+    update :function(){
+        if (state.current == state.game ) {
+            fg.x = (fg.x - this.dx) % (this.w/2)            
+        }
     }
 
 }
@@ -100,7 +113,8 @@ var gameOver = {
     }
 
 }
-debugger
+
+
 var bird = {
     animation : [
         {sx : 276,sy : 112},
@@ -138,12 +152,14 @@ var bird = {
         } else {
             this.speed += this.gravity
             this.y += this.speed
+            // this.x += this.speed
             if (this.speed < this.jump) {
                 this.rotation = DEGREE(-25)
                 
             } else { 
                 this.rotation = DEGREE(90)
             }
+    
         }
         if (this.y + this.h/2 >= can.height - fg.h ) {
             this.y = can.height - fg.h - this.h/2
@@ -159,6 +175,7 @@ var bird = {
     ,
     flap : function(){
         this.speed = - this.jump ;
+        // this.x += this.jump + 10
     }
 
 }
@@ -175,6 +192,8 @@ function draw(){
 }
 function update(){
     bird.update()
+    fg.update()
+    bg.update()
 
 }
 function animate(){
