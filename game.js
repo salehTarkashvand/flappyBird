@@ -1,4 +1,4 @@
-import {DEGREE} from "/utils.js" 
+import {DEGREE , getRandomNumberBytowNumber} from "/utils.js" 
 // add canvas 
 
 var can = document.getElementById("mycanvas");
@@ -31,6 +31,7 @@ function clickHandler () {
         default:
             bird.rotation = 0 ;
             bird.speed = 0 ;
+            pipes.position = []
             state.current = state.getReady
             break;
     }    
@@ -61,6 +62,52 @@ var bg = {
         }           
     }
 
+}
+
+var pipes = {
+    top :{
+        sX : 553,
+        sY : 0
+    },
+    bottom:{
+        sX : 502,
+        sY : 0
+    },
+    w : 53,
+    h : 400,
+    dx : 2,
+    gap : 80,
+    position : [],
+    maxYPos : -150 ,
+    draw : function() {
+        for (let i = 0; i < this.position.length ; i++) {
+            let p = this.position[i];
+
+            let topYPos = p.y ;
+            let bottomYPos = p.y + this.h + this.gap; 
+
+            c.drawImage(sprite,this.top.sX,this.top.sY,this.w ,this.h ,p.x,topYPos,this.w,this.h)
+            c.drawImage(sprite,this.bottom.sX,this.bottom.sY,this.w ,this.h ,p.x,bottomYPos,this.w,this.h)
+                    
+           }
+        
+    },
+    upadte : function() {
+        if(state.current != state.game ){return};
+        if(frames % 100 == 0){
+            this.position.push({
+                x : can.width ,
+                // y :this.maxYpose * getRandomNumberBytowNumber(-150,1)
+                y : this.maxYPos * (Math.random()+1)
+        })
+    }
+        for (let i = 0; i < this.position.length ; i++) {
+         let p = this.position[i];
+         p.x -= this.dx
+
+        }
+                
+    }
 }
 var fg = {
     sx : 276 ,
@@ -185,6 +232,7 @@ function draw(){
     c.fillStyle = "#70c5ce"
     c.fillRect(0 , 0 , can.width , can.height)
     bg.draw()
+    pipes.draw()
     fg.draw()
     bird.draw()
     getReady.draw()
@@ -194,6 +242,7 @@ function update(){
     bird.update()
     fg.update()
     bg.update()
+    pipes.upadte()
 
 }
 function animate(){
