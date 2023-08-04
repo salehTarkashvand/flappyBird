@@ -52,14 +52,17 @@ var bg = {
     y  : can.height - 226 ,
     dx : 2 ,
     draw : function(){
-      c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x,this.y,this.w,this.h)
+      c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x ,this.y,this.w,this.h)
+      c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x + this.w ,this.y,this.w,this.h)
       c.drawImage(sprite,this.sx,this.sy,this.w ,this.h ,this.x + this.w ,this.y,this.w,this.h)
       
     },
     update :function(){
-        if (state.current == state.game ) {
-            bg.x = (bg.x - this.dx) % (this.w/2) 
-        }           
+       
+        if (frames % 10 == 0 && state.current !== state.over ) {
+            bg.x = (bg.x - this.dx)  % (this.w/2)
+        }
+                
     }
 
 }
@@ -84,7 +87,7 @@ var pipes = {
             let p = this.position[i];
 
             let topYPos = p.y ;
-            let bottomYPos = p.y + this.h + this.gap; 
+            let bottomYPos = p.y + this.h + this.gap;
 
             c.drawImage(sprite,this.top.sX,this.top.sY,this.w ,this.h ,p.x,topYPos,this.w,this.h)
             c.drawImage(sprite,this.bottom.sX,this.bottom.sY,this.w ,this.h ,p.x,bottomYPos,this.w,this.h)
@@ -102,8 +105,30 @@ var pipes = {
         })
     }
         for (let i = 0; i < this.position.length ; i++) {
-         let p = this.position[i];
-         p.x -= this.dx
+        let p = this.position[i];
+            p.x -= this.dx
+            let bottomPipesPosition = p.y + this.h + this.gap ;
+        if (bird.x + bird.redius > p.x &&
+             bird.x - bird.redius < p.x + this.w &&
+              bird.y - bird.redius < p.y + this.h &&
+               bird.y +bird.redius > p.y  ) {
+
+                state.current = state.over
+            
+        }
+        if (bird.x + bird.redius > p.x &&
+             bird.x - bird.redius < p.x + this.w &&
+              bird.y - bird.redius < bottomPipesPosition + this.h &&
+               bird.y +bird.redius > bottomPipesPosition  ) {
+
+                state.current = state.over
+            
+        }
+        if (p.x + this.w <= 0) {
+            pipes.position.shift()
+            
+        }
+        
 
         }
                 
@@ -162,6 +187,7 @@ var gameOver = {
 }
 
 
+
 var bird = {
     animation : [
         {sx : 276,sy : 112},
@@ -179,6 +205,7 @@ var bird = {
     jump : 4.6,
     rotation : 0 ,
     animationIndex : 0 ,
+    redius : 12 ,
     draw : function(){
         var bird = this.animation[this.animationIndex]
         c.save();
@@ -208,7 +235,7 @@ var bird = {
             }
     
         }
-        if (this.y + this.h/2 >= can.height - fg.h ) {
+        if (this.y + this.h/2 >= can.height - fg.h) {
             this.y = can.height - fg.h - this.h/2
             this.animationIndex = 0;
 
