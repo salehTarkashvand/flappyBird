@@ -285,7 +285,7 @@ var bird = {
     y  : 150 ,
     speed : 0 ,
     gravity : 0.25 ,
-    jump : 3,
+    jump : 4 ,
     rotation : 0 ,
     animationIndex : 0 ,
     redius : 12 ,
