@@ -9,6 +9,21 @@ var frames = 0 ;
 var sprite = new Image()
 sprite.src = "img/sprite.png"
 
+var SCORE = new Audio()
+SCORE.src = "audio/score.wav"
+
+var FLAP = new Audio()
+FLAP.src = "audio/flap.wav"
+
+var HIT = new Audio()
+HIT.src = "audio/hit.wav"
+
+var DIE = new Audio()
+DIE.src = "audio/die.wav"
+
+var START = new Audio()
+START.src = "audio/start.wav"
+
 var state = {
     current : 0 ,
     getReady : 0 ,
@@ -21,14 +36,17 @@ var state = {
 function clickHandler () {
     switch (state.current) {
         case state.getReady:
+            START.play()
             state.current = state.game
             break;
     
         case state.game:
+            FLAP.play()
             bird.flap()
             break;
     
         default:
+            score.value = 0 ;
             bird.rotation = 0 ;
             bird.speed = 0 ;
             pipes.position = []
@@ -67,6 +85,7 @@ var bg = {
 
 }
 
+
 var pipes = {
     top :{
         sX : 553,
@@ -79,7 +98,7 @@ var pipes = {
     w : 53,
     h : 400,
     dx : 2,
-    gap : 80,
+    gap : 150,
     position : [],
     maxYPos : -150 ,
     draw : function() {
@@ -113,6 +132,7 @@ var pipes = {
               bird.y - bird.redius < p.y + this.h &&
                bird.y +bird.redius > p.y  ) {
 
+                HIT.play()
                 state.current = state.over
             
         }
@@ -121,11 +141,16 @@ var pipes = {
               bird.y - bird.redius < bottomPipesPosition + this.h &&
                bird.y +bird.redius > bottomPipesPosition  ) {
 
+                HIT.play()
                 state.current = state.over
             
         }
         if (p.x + this.w <= 0) {
             pipes.position.shift()
+            score.value += 1
+            SCORE.play()
+            score.best = Math.max(score.value,score.best)
+            localStorage.setItem("best" , score.best)
             
         }
         
@@ -187,7 +212,7 @@ var gameOver = {
 }
 
 var score = {
-    best : 0 ,
+    best : localStorage.getItem("best") || 0 ,
     value : 0 ,
     draw : function () {
         c.fillStyle = "#FFF";
@@ -266,8 +291,10 @@ var bird = {
         if (this.y + this.h/2 >= can.height - fg.h) {
             this.y = can.height - fg.h - this.h/2
             this.animationIndex = 0;
+            
 
             if (state.current == state.game) {
+                DIE.play()
                 state.current = state.over  
     
             }
