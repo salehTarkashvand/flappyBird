@@ -1,6 +1,10 @@
-import {DEGREE , getRandomNumberBytowNumber} from "/utils.js" 
-// add canvas 
-
+//import {DEGREE , getRandomNumberBytowNumber} from "/utils.js" 
+// // add canvas 
+function DEGREE(RADIAN){
+    const degree = RADIAN * Math.PI / 180
+    return degree
+  }
+  
 var can = document.getElementById("mycanvas");
 var c = can.getContext("2d");
 
@@ -31,7 +35,7 @@ var state = {
     over : 2
 }
 
-// add click handler for state
+// // add click handler for state
 
 function clickHandler () {
     switch (state.current) {
@@ -362,3 +366,4 @@ function animate(){
     requestAnimationFrame(animate)
 }
 animate()
+
