@@ -98,7 +98,7 @@ var pipes = {
     w : 53,
     h : 400,
     dx : 2,
-    gap : 150,
+    gap : 80,
     position : [],
     maxYPos : -150 ,
     draw : function() {
@@ -127,6 +127,8 @@ var pipes = {
         let p = this.position[i];
             p.x -= this.dx
             let bottomPipesPosition = p.y + this.h + this.gap ;
+
+
         if (bird.x + bird.redius > p.x &&
              bird.x - bird.redius < p.x + this.w &&
               bird.y - bird.redius < p.y + this.h &&
@@ -239,6 +241,30 @@ var score = {
         
     }
 }
+var medals = {
+    draw : function(){
+        var x = 72 
+        var y = 170
+        var w = 45 
+        var h = 50
+        if (score.value < 10 && state.current == state.over) {
+            c.drawImage(sprite,312,106,w ,h,x,y,w,h)
+            
+        }
+        if (10 <= score.value && score.value < 20 && state.current == state.over) {
+            c.drawImage(sprite,360,106,w ,h ,x,y,w,h)
+            
+        }
+        if (20 <= score.value && score.value < 30 && state.current == state.over) {
+            c.drawImage(sprite,360,158,w ,h ,x,y+5,w,h)
+            
+        }
+        if (30 <= score.value && state.current == state.over) {
+            c.drawImage(sprite,312,158,w ,h ,x,y+6,w,h)
+            
+        }
+    }
+}
 
 
 var bird = {
@@ -320,6 +346,7 @@ function draw(){
     getReady.draw()
     gameOver.draw()
     score.draw()
+    medals.draw()
 }
 function update(){
     bird.update()
