@@ -186,6 +186,34 @@ var gameOver = {
 
 }
 
+var score = {
+    best : 0 ,
+    value : 0 ,
+    draw : function () {
+        c.fillStyle = "#FFF";
+        c.strokeStyle = "#000"
+        
+        if (state.current == state.game) {
+            c.lineWidth = 2 ,
+            c.font = "25px IMPACT"
+
+            c.fillText(this.value , can.width/2 , 50)
+            c.strokeText(this.value , can.width/2 , 50)
+            
+        } else if (state.current == state.over){
+            c.font = "25px IMPACT"
+
+            c.fillText(this.value , 225 , 186)
+            c.strokeText(this.value , 225 , 186)
+            
+            c.fillText(this.best , 225 , 228)
+            c.strokeText(this.best , 225 , 228)
+            
+        }
+        
+        
+    }
+}
 
 
 var bird = {
@@ -264,6 +292,7 @@ function draw(){
     bird.draw()
     getReady.draw()
     gameOver.draw()
+    score.draw()
 }
 function update(){
     bird.update()
