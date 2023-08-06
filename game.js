@@ -102,7 +102,7 @@ var pipes = {
     w : 53,
     h : 400,
     dx : 2,
-    gap : 80,
+    gap : 95,
     position : [],
     maxYPos : -150 ,
     draw : function() {
@@ -285,7 +285,7 @@ var bird = {
     y  : 150 ,
     speed : 0 ,
     gravity : 0.25 ,
-    jump : 4 ,
+    jump : 3.5 ,
     rotation : 0 ,
     animationIndex : 0 ,
     redius : 12 ,
